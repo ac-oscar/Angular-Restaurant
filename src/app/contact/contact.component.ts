@@ -25,7 +25,7 @@ export class ContactComponent implements OnInit {
     'firstname': {
       'required': 'First Name is required.',
       'minlength': 'First Name must be at least 2 characters long.',
-      'maxlength': 'FirstName cannot be more than 25 characters long.'
+      'maxlength': 'First Name cannot be more than 25 characters long.'
     },
     'lastname': {
       'required': 'Last Name is required.',
@@ -39,7 +39,7 @@ export class ContactComponent implements OnInit {
     'email': {
       'required': 'Email is required.',
       'email': 'Email not in valid format.'
-    },
+    }
   };
   constructor(private fb: FormBuilder) {
     this.createForm();
