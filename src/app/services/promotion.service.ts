@@ -11,19 +11,19 @@ export class PromotionService {
 
   getPromotions(): Promise<Promotion[]> {
     return new Promise((resolve, reject) => {
-      resolve(PROMOTIONS);
+      setTimeout(() => resolve(PROMOTIONS), 2000);
     });
   }
 
   getPromotion(id: string): Promise<Promotion> {
     return new Promise((resolve, reject) => {
-      resolve(PROMOTIONS.filter((prom) => (prom.id === id))[0]);
+      setTimeout(() => resolve(PROMOTIONS.filter((prom) => (prom.id === id))[0]), 2000);
     });
   }
 
   getFeaturedPromotion(): Promise<Promotion> {
     return new Promise((resolve, reject) => {
-      resolve(PROMOTIONS.filter((prom) => prom.featured)[0]);
+      setTimeout(() => resolve(PROMOTIONS.filter((prom) => prom.featured)[0]), 2000);
     });
   }
 }

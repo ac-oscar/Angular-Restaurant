@@ -12,19 +12,19 @@ export class DishService {
 
   getDishes(): Promise<Dish[]> {
     return new Promise((resolve, reject) => {
-      resolve(DISHES);
+      setTimeout(() => resolve(DISHES), 2000);
     });
   }
 
   getDish(id: string): Promise<Dish> {
     return new Promise((resolve, reject) => {
-      resolve(DISHES.filter((dish) => (dish.id === id))[0]);
+      setTimeout(() => resolve(DISHES.filter((dish) => (dish.id === id))[0]), 2000);
     });
   }
 
   getFeaturedDish(): Promise<Dish> {
     return new Promise((resolve, reject) => {
-      resolve(DISHES.filter((dish) => (dish.featured))[0]);
+      setTimeout(() => resolve(DISHES.filter((dish) => (dish.featured))[0]), 2000);
     });
   }
 }

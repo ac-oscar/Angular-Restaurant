@@ -12,19 +12,19 @@ export class LeaderService {
 
   getLeaders(): Promise<Leader[]> {
     return new Promise((resolve, reject) => {
-      resolve(LEADERS);
+      setTimeout(() => resolve(LEADERS), 2000);
     });
   }
 
   getLeader(id: string): Promise<Leader> {
     return new Promise((resolve, reject) => {
-      resolve(LEADERS.filter((lead) => (lead.id === id))[0]);
+      setTimeout(() => resolve(LEADERS.filter((lead) => (lead.id === id))[0]), 2000);
     });
   }
 
   getFeaturedLeader(): Promise<Leader> {
     return new Promise((resolve, reject) => {
-      resolve(LEADERS.filter((lead) => lead.featured)[0]);
+      setTimeout(() => resolve(LEADERS.filter((lead) => lead.featured)[0]), 2000);
     });
   }
 }
