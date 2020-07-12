@@ -18,6 +18,7 @@ export class DishdetailComponent implements OnInit {
   feedbackCommentForm: FormGroup;
   feedback: Comment;
   dish: Dish;
+  errMess: string;
   dishIds: string[];
   prev: string;
   next: string;
@@ -52,10 +53,13 @@ export class DishdetailComponent implements OnInit {
     this.route.params.pipe(switchMap(
       (params: Params) => this.dishService.getDish(params['id'])
     )
-    ).subscribe(dish => {
-      this.dish = dish;
-      this.setPrevNext(dish.id);
-    });
+    ).subscribe(
+      dish => {
+        this.dish = dish;
+        this.setPrevNext(dish.id);
+      },
+      errmess => this.errMess = <any>errmess
+    );
   }
 
   setPrevNext(dishId: string) {
@@ -116,7 +120,7 @@ export class DishdetailComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackCommentForm.value;
     this.feedback.date = new Date().toISOString();
-    
+
     DISHES.map(dish => {
       if (dish.id === this.dish.id) {
         dish.comments.push(this.feedback);
@@ -129,7 +133,7 @@ export class DishdetailComponent implements OnInit {
       rating: 5
     });
 
-    // this.feedbackCommentFormDirective.resetForm();
+    this.feedbackCommentFormDirective.resetForm();
   }
 
 }

@@ -39,13 +39,13 @@
   <div fxFlex="40" *ngIf="dish" class="form-size">
     <mat-list *ngIf="feedbackCommentForm.valid">
       <mat-list-item>
-        <p matLine><span>{{ feedbackCommentForm.value.comment | json }}</span></p>
-        <p matLine><span>{{ feedbackCommentForm.value.rating | json }} Stars</span></p>
-        <p matLine><span>-- {{ feedbackCommentForm.value.author | json }}</span></p>
+        <p matLine><span>{{ feedbackCommentForm.get('comment').value }}</span></p>
+        <p matLine><span>{{ feedbackCommentForm.get('rating').value }} Stars</span></p>
+        <p matLine><span>-- {{ feedbackCommentForm.get('author').value }}</span></p>
       </mat-list-item>
     </mat-list>
 
-    <form novalidate [formGroup]="feedbackCommentForm" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="feedbackCommentForm" #fform="ngForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field class="full-width">
           <input matInput formControlName="author" placeholder="Name" type="text" required>
@@ -64,9 +64,14 @@
     </form>
   </div>
 
-  <div fxFlex [hidden]="dish">
+  <div fxFlex [hidden]="dish || errMess">
     <mat-spinner></mat-spinner>
     <h4>Loading . . . please Wait</h4>
+  </div>
+
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
   </div>
 
 </div>

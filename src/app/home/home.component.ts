@@ -18,6 +18,9 @@ export class HomeComponent implements OnInit {
   dish: Dish;
   promotion: Promotion;
   leader: Leader;
+  dishErrMess: string;
+  promotionErrMess: string;
+  leaderErrMess: string;
 
   constructor(
     private dishService: DishService,
@@ -27,9 +30,21 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dishService.getFeaturedDish().subscribe((resolve) => this.dish = resolve);
-    this.promotionService.getFeaturedPromotion().subscribe((resolve) => this.promotion = resolve);
-    this.leaderService.getFeaturedLeader().subscribe((resolve) => this.leader = resolve);
+    this.dishService.getFeaturedDish().
+      subscribe(
+        resolve => this.dish = resolve,
+        errmess => this.dishErrMess = <any>errmess
+      );
+    this.promotionService.getFeaturedPromotion().
+      subscribe(
+        resolve => this.promotion = resolve,
+        errmess => this.promotionErrMess = <any>errmess
+      );
+    this.leaderService.getFeaturedLeader().
+      subscribe(
+        resolve => this.leader = resolve,
+        errmess => this.leaderErrMess = <any>errmess
+      );
   }
 
 }
