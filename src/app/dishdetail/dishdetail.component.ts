@@ -122,7 +122,7 @@ export class DishdetailComponent implements OnInit {
     this.feedback = this.feedbackCommentForm.value;
     this.feedback.date = new Date().toISOString();
     this.dishCopy.comments.push(this.feedback);
-    
+
     this.dishService.putDish(this.dishCopy).
       subscribe(
         dish => {
@@ -130,7 +130,7 @@ export class DishdetailComponent implements OnInit {
           this.dishCopy = dish;
         },
         errmess => {
-          this.errMess = errmess;
+          this.errMess = <any>errmess;
           this.dishCopy = null;
           this.dish = null;
         });
