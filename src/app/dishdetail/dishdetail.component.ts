@@ -6,7 +6,6 @@ import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
 import { Dish } from '../shared/dish';
-import { DISHES } from '../shared/dishes';
 
 @Component({
   selector: 'app-dishdetail',
@@ -18,6 +17,7 @@ export class DishdetailComponent implements OnInit {
   feedbackCommentForm: FormGroup;
   feedback: Comment;
   dish: Dish;
+  dishCopy: Dish;
   errMess: string;
   dishIds: string[];
   prev: string;
@@ -56,6 +56,7 @@ export class DishdetailComponent implements OnInit {
     ).subscribe(
       dish => {
         this.dish = dish;
+        this.dishCopy = dish;
         this.setPrevNext(dish.id);
       },
       errmess => this.errMess = <any>errmess
@@ -120,20 +121,25 @@ export class DishdetailComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackCommentForm.value;
     this.feedback.date = new Date().toISOString();
+    this.dishCopy.comments.push(this.feedback);
+    
+    this.dishService.putDish(this.dishCopy).
+      subscribe(
+        dish => {
+          this.dish = dish;
+          this.dishCopy = dish;
+        },
+        errmess => {
+          this.errMess = errmess;
+          this.dishCopy = null;
+          this.dish = null;
+        });
 
-    DISHES.map(dish => {
-      if (dish.id === this.dish.id) {
-        dish.comments.push(this.feedback);
-      }
-    });
-
+    this.feedbackCommentFormDirective.resetForm();
     this.feedbackCommentForm.reset({
       author: '',
       comment: '',
       rating: 5
     });
-
-    this.feedbackCommentFormDirective.resetForm();
   }
-
 }
