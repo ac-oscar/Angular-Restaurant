@@ -56,14 +56,3 @@ export function expand() {
         ])
     ])
 }
-
-export function display() {
-    return trigger('display', [
-        state('shown', style({
-            display: 'block'
-        })),
-        state('hidden', style({
-            display: 'none'
-        }))
-    ])
-}
