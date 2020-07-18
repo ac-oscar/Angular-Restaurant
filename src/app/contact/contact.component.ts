@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Feedback, ContactType } from '../shared/feedback';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { flyInOut } from '../animations/app.animations';
+import { display, flyInOut, expand } from '../animations/app.animations';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -11,13 +12,18 @@ import { flyInOut } from '../animations/app.animations';
     '[@flyInOut]': 'true',
     'style': 'display: block;'
   },
-  animations: [flyInOut()]
+  animations: [display(), flyInOut(), expand()]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackAnswer: Feedback;
+  errMess: string;
   contactType = ContactType;
+  formVisibility = 'shown';
+  feedbackVisibility = 'hidden';
+  spinnerVisibility = 'hidden';
   @ViewChild('fform') feedbackFormDirective;
 
   formError = {
@@ -47,7 +53,10 @@ export class ContactComponent implements OnInit {
       'email': 'Email not in valid format.'
     }
   };
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private feedbackService: FeedbackService
+    ) {
     this.createForm();
   }
 
@@ -118,7 +127,28 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.formVisibility = 'hidden';
+    this.spinnerVisibility = 'shown';
+
+    this.feedbackService.submitFeedback(this.feedback).
+    subscribe(
+      feedback => {
+        this.feedback = feedback;
+        this.feedbackAnswer = feedback;
+        this.spinnerVisibility = 'hidden';
+        this.feedbackVisibility = 'shown';
+        
+        setTimeout(() => {
+          this.feedbackVisibility = 'hidden';
+          this.formVisibility = 'shown';
+        }, 5000);
+      },
+      errmess => {
+        this.errMess = <any>errmess;
+        this.feedback = null;
+        this.feedbackAnswer = null;
+      });
+
     this.feedbackFormDirective.resetForm();
     this.feedbackForm.reset({
       firstname: '',

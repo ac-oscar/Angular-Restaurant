@@ -1,4 +1,5 @@
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 
 export function visibility() {
     return trigger('visibility', [
@@ -53,5 +54,16 @@ export function expand() {
                 opacity: 1
             }))
         ])
+    ])
+}
+
+export function display() {
+    return trigger('display', [
+        state('shown', style({
+            display: 'block'
+        })),
+        state('hidden', style({
+            display: 'none'
+        }))
     ])
 }
