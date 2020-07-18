@@ -12,18 +12,16 @@ import { FeedbackService } from '../services/feedback.service';
     '[@flyInOut]': 'true',
     'style': 'display: block;'
   },
-  animations: [display(), flyInOut(), expand()]
+  animations: [flyInOut(), expand()]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
-  feedbackAnswer: Feedback;
   errMess: string;
   contactType = ContactType;
-  formVisibility = 'shown';
-  feedbackVisibility = 'hidden';
-  spinnerVisibility = 'hidden';
+  formVisibility: boolean;
+  feedbackVisibility: boolean;
   @ViewChild('fform') feedbackFormDirective;
 
   formError = {
@@ -96,6 +94,9 @@ export class ContactComponent implements OnInit {
       message: ''
     });
 
+    this.formVisibility = true;
+    this.feedbackVisibility = false;
+
     this.feedbackForm.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
@@ -127,26 +128,22 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    this.formVisibility = 'hidden';
-    this.spinnerVisibility = 'shown';
+    this.formVisibility = false;
 
     this.feedbackService.submitFeedback(this.feedback).
     subscribe(
       feedback => {
         this.feedback = feedback;
-        this.feedbackAnswer = feedback;
-        this.spinnerVisibility = 'hidden';
-        this.feedbackVisibility = 'shown';
+        this.feedbackVisibility = true;
         
         setTimeout(() => {
-          this.feedbackVisibility = 'hidden';
-          this.formVisibility = 'shown';
+          this.feedbackVisibility = false;
+          this.formVisibility = true;
         }, 5000);
       },
       errmess => {
         this.errMess = <any>errmess;
         this.feedback = null;
-        this.feedbackAnswer = null;
       });
 
     this.feedbackFormDirective.resetForm();

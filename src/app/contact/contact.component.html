@@ -36,7 +36,7 @@
 
   <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3>Send us your Feedback</h3>
-    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" [@display]="formVisibility" [@expand]>
+    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" *ngIf="formVisibility" [@expand]>
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
@@ -79,18 +79,18 @@
     </form>
   </div>
 
-  <div *ngIf="feedbackAnswer" [@display]="feedbackVisibility" [@expand]>
+  <div *ngIf="feedbackVisibility" [@expand]>
     <h3>Your Submission</h3>
-    <p>First Name: {{ feedbackAnswer.firstname }}</p>
-    <p>Last Name: {{ feedbackAnswer.lastname }}</p>
-    <p>Tel. Number: {{ feedbackAnswer.telnum }}</p>
-    <p>Email: {{ feedbackAnswer.email }}</p>
-    <p>Contact You?: {{ feedbackAnswer.agree }}</p>
-    <p>How?: {{ feedbackAnswer.contacttype }}</p>
-    <p>Feedback: {{ feedbackAnswer.message }}</p>
+    <p>First Name: {{ feedback.firstname }}</p>
+    <p>Last Name: {{ feedback.lastname }}</p>
+    <p>Tel. Number: {{ feedback.telnum }}</p>
+    <p>Email: {{ feedback.email }}</p>
+    <p>Contact You?: {{ feedback.agree }}</p>
+    <p>How?: {{ feedback.contacttype }}</p>
+    <p>Feedback: {{ feedback.message }}</p>
   </div>
 
-  <div fxFlex [hidden]="feedbackForm || feedbackAnswer || errMess" [@display]="spinnerVisibility">
+  <div fxFlex [hidden]="formVisibility || feedbackVisibility || errMess">
     <mat-spinner></mat-spinner>
     <h4>Submitting Form</h4>
   </div>
